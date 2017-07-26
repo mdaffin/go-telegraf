@@ -10,10 +10,8 @@ var measurementEscaper = strings.NewReplacer(`,`, `\,`, ` `, `\ `)
 var keyEscaper = strings.NewReplacer(`,`, `\,`, ` `, `\ `, `=`, `\=`)
 var tagValueEscaper = keyEscaper
 
-//var fieldValueEscaper = strings.NewReplacer(`"`, `\"`)
-
-func (m Metric) String() string {
-	line := measurementEscaper.Replace(m.measurement)
+func (m Measurement) String() string {
+	line := measurementEscaper.Replace(m.name)
 	for tag, value := range m.tagSet {
 		line += "," + keyEscaper.Replace(tag) + "=" + tagValueEscaper.Replace(value)
 	}
