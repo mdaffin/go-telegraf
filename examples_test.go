@@ -2,26 +2,23 @@ package telegraf_test
 
 import (
 	"log"
-	"net"
 
 	"github.com/mdaffin/go-telegraf"
 )
 
 func ExampleMeasurement() {
-	conn, err := net.Dial("udp", "127.0.0.1:8094")
+	client, err := telegraf.NewUDP("127.0.0.1:8094", nil)
 	if err != nil {
-		log.Fatalf("failed to connect: %s", err)
+		log.Fatal("could not connect:", err)
 	}
-	defer conn.Close()
+	defer client.Close()
 
-	client := telegraf.New(conn)
-
-	measurement := telegraf.NewMeasurement("cpu", nil)
+	measurement := telegraf.NewMeasurement("cpu", map[string]string{"region": "europe-west1"})
 	measurement.AddFloat64("load_avg", 1.4)
 	measurement.AddInt("counter", 1)
 
 	if err := client.Write(measurement); err != nil {
-		log.Fatalf("failed to write metric: %s", err)
+		log.Fatal("failed to write metric:", err)
 	}
 
 	// Output:

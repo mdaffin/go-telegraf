@@ -18,15 +18,37 @@ type Client struct {
 	tagSet map[string]string
 }
 
-func New(conn net.Conn) Client {
-	return Client{
-		conn: conn,
+func NewUDP(addr string, tags map[string]string) (Client, error) {
+	if tags == nil {
+		tags = map[string]string{}
 	}
+	conn, err := net.Dial("udp", addr)
+	return Client{conn: conn, tagSet: tags}, err
+}
+
+func (c *Client) Close() error {
+	return c.conn.Close()
 }
 
 func (c *Client) Write(m Measurement) error {
+	for k, v := range c.tagSet {
+		if _, ok := m.tagSet[k]; !ok {
+			m.tagSet[k] = v
+		}
+
+	}
 	_, err := fmt.Fprintf(c.conn, "%s\n", m)
 	return err
+}
+
+func (c *Client) WriteAll(m []Measurement) error {
+	// TODO write a benchmark to see if multiple writes or a string join and a single write is faster
+	for _, m := range m {
+		if err := c.Write(m); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func NewMeasurement(name string, tags map[string]string) Measurement {
