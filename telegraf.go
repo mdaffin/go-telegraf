@@ -52,6 +52,10 @@ func (c *Client) WriteAll(m []Measurement) error {
 }
 
 func NewMeasurement(name string, tags map[string]string) Measurement {
+	return NewMeasurementAt(name, time, Now(), tags)
+}
+
+func NewMeasurementAt(name string, timestamp time.Time, tags map[string]string) Measurement {
 	if tags == nil {
 		tags = map[string]string{}
 	}
@@ -59,7 +63,7 @@ func NewMeasurement(name string, tags map[string]string) Measurement {
 		name:      name,
 		tagSet:    tags,
 		fieldSet:  map[string]interface{}{},
-		timestamp: time.Now(),
+		timestamp: timestamp,
 	}
 }
 
