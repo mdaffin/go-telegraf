@@ -52,7 +52,7 @@ func (c *Client) WriteAll(m []Measurement) error {
 }
 
 func NewMeasurement(name string, tags map[string]string) Measurement {
-	return NewMeasurementAt(name, time, Now(), tags)
+	return NewMeasurementAt(name, time.Now(), tags)
 }
 
 func NewMeasurementAt(name string, timestamp time.Time, tags map[string]string) Measurement {
