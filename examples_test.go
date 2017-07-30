@@ -14,12 +14,12 @@ func ExampleMeasurement() {
 	}
 	defer client.Close()
 
-	measurement := telegraf.MeasureInt("app", "request_size", 5042).AddTag("path", "/api/testing")
+	m := telegraf.MeasureInt("app", "request_size", 5042).AddTag("path", "/api/testing")
 	start := time.Now()
 	time.Sleep(time.Millisecond * 100)
-	measurement = measurement.AddMillisecondsSince("request_time", start).AddInt("response_size", 3045)
+	m = m.AddMillisecondsSince("request_time", start).AddInt("response_size", 3045).AddTag("status_code", "200")
 
-	if err := client.Write(measurement); err != nil {
+	if err := client.Write(m); err != nil {
 		log.Fatal("failed to write metric:", err)
 	}
 

@@ -19,7 +19,7 @@ func (c *Client) Close() error {
 }
 
 func (c *Client) Write(m Measurement) error {
-	_, err := fmt.Fprintf(c.conn, "%s\n", m)
+	_, err := fmt.Fprintln(c.conn, m.ToLineProtocal())
 	return err
 }
 

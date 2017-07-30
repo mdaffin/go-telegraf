@@ -47,7 +47,7 @@ func TestMeasurementsToString(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, test.output, test.input.String())
+			assert.Equal(t, test.output, test.input.ToLineProtocal())
 		})
 	}
 }
@@ -56,6 +56,6 @@ func BenchmarkMeasurementsToString(b *testing.B) {
 	weather := MeasureFloat64("weather", "temp", 22.7)
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		weather.String()
+		weather.ToLineProtocal()
 	}
 }

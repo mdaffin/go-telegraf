@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	// To escape the various parts of the influxdb line protocal
+	// Escapes the various parts of the influxdb line protocal
 	measurementEscaper = strings.NewReplacer(`,`, `\,`, ` `, `\ `)
 	keyEscaper         = strings.NewReplacer(`,`, `\,`, ` `, `\ `, `=`, `\=`)
 	tagValueEscaper    = keyEscaper
@@ -103,11 +103,18 @@ func newMeasurement(name string, field string, value interface{}) Measurement {
 	}
 }
 
+// SetTime of the measurement. The default is time.Now(), this can be used to
+// override the default. Set it to a zero time to unset the time, which will
+// cause telegraf or influxdb to set the time when they recieve the measurement
+// instead.
 func (m Measurement) SetTime(time time.Time) Measurement {
 	m.timestamp = time
 	return m
 }
 
+// AddTag to the measurement. Tags are global for all fields in this
+// measurement - if you want them to have differenent tags you must create a
+// second measurement with the alternate tags.
 func (m Measurement) AddTag(name string, value string) Measurement {
 	m.tagSet[name] = value
 	return m
@@ -227,7 +234,8 @@ func (m Measurement) AddString(name string, value string) Measurement {
 	return m
 }
 
-func (m Measurement) String() string {
+// ToLineProtocal converts the metric to the influxdb line protocal.
+func (m Measurement) ToLineProtocal() string {
 	line := measurementEscaper.Replace(m.name)
 	for tag, value := range m.tagSet {
 		line += "," + keyEscaper.Replace(tag) + "=" + tagValueEscaper.Replace(value)
