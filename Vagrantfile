@@ -55,18 +55,12 @@ cat <<\EOF >/etc/telegraf/telegraf.conf
 
 [[inputs.socket_listener]]
   service_address = "tcp://:8094"
-  read_timeout = "10s"
-  write_timeout = "10s"
 
 [[inputs.socket_listener]]
   service_address = "udp://:8095"
-  read_timeout = "10s"
-  write_timeout = "10s"
 
 [[inputs.socket_listener]]
   service_address = "unix:///var/run/telegraf.sock"
-  read_timeout = "10s"
-  write_timeout = "10s"
 
 [[outputs.file]]
   files = ["/tmp/metrics.out"]
