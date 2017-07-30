@@ -31,7 +31,7 @@ func NewUDP(addr string) (Client, error) {
 // [[inputs.socket_listener]]
 //   service_address = "tcp://:8094"
 // ```
-func NewUDP(addr string) (Client, error) {
+func NewTCP(addr string) (Client, error) {
 	conn, err := net.Dial("tcp", addr)
 	return Client{conn: conn}, err
 }
