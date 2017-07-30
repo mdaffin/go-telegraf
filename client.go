@@ -1,3 +1,4 @@
+// Writes metrics to telegraf using the socket_listener. It supports the udp, tcp and unix socket connections.
 package telegraf
 
 import (

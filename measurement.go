@@ -24,81 +24,11 @@ type Measurement struct {
 	timestamp time.Time
 }
 
-// MeasureFloat64 creates a new measurement with the given float64 field.
-func MeasureFloat64(name string, field string, value float64) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureFloat32 creates a new measurement with the given float32 field.
-func MeasureFloat32(name string, field string, value float32) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureInt creates a new measurement with the given int field.
-func MeasureInt(name string, field string, value int) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureInt8 creates a new measurement with the given int8 field.
-func MeasureInt8(name string, field string, value int8) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureInt16 creates a new measurement with the given int16 field.
-func MeasureInt16(name string, field string, value int16) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureInt32 creates a new measurement with the given int32 field.
-func MeasureInt32(name string, field string, value int32) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureInt64 creates a new measurement with the given int64 field.
-func MeasureInt64(name string, field string, value int64) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureUInt creates a new measurement with the given uint field.
-func MeasureUInt(name string, field string, value uint) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureUInt8 creates a new measurement with the given uint8 field.
-func MeasureUInt8(name string, field string, value uint8) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureUInt16 creates a new measurement with the given uint16 field.
-func MeasureUInt16(name string, field string, value uint16) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureUInt32 creates a new measurement with the given uint32 field.
-func MeasureUInt32(name string, field string, value uint32) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureString creates a new measurement with the given string field.
-func MeasureString(name string, field string, value string) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureBool creates a new measurement with the given bool field.
-func MeasureBool(name string, field string, value bool) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-// MeasureUInt64 creates a new measurement with the given uint64 field.
-func MeasureUInt64(name string, field string, value uint64) Measurement {
-	return newMeasurement(name, field, value)
-}
-
-func newMeasurement(name string, field string, value interface{}) Measurement {
+func newMeasurement(name string) Measurement {
 	return Measurement{
 		name:      name,
 		tagSet:    map[string]string{},
-		fieldSet:  map[string]interface{}{field: value},
+		fieldSet:  map[string]interface{}{},
 		timestamp: time.Now(),
 	}
 }
@@ -120,10 +50,20 @@ func (m Measurement) AddTag(name string, value string) Measurement {
 	return m
 }
 
-// AddNanosecondsSince t as the field called name stored as an int64.
+// MeasureNanosecondsSince creates a new measurement with the given uint64 field.
+func MeasureNanosecondsSince(name string, field string, t time.Time) Measurement {
+	return newMeasurement(name).AddNanosecondsSince(field, t)
+}
+
+// AddNanosecondsSince t as the field called name stored as an uint64.
 func (m Measurement) AddNanosecondsSince(name string, t time.Time) Measurement {
 	m.fieldSet[name] = time.Since(t).Nanoseconds()
 	return m
+}
+
+// MeasureMillisecondsSince creates a new measurement with the given uint64 field.
+func MeasureMillisecondsSince(name string, field string, t time.Time) Measurement {
+	return newMeasurement(name).AddMillisecondsSince(field, t)
 }
 
 // AddMillisecondsSince t as the field called name stored as a int64.
@@ -132,10 +72,20 @@ func (m Measurement) AddMillisecondsSince(name string, t time.Time) Measurement 
 	return m
 }
 
+// MeasureSecondsSince creates a new measurement with the given float64 field.
+func MeasureSecondsSince(name string, field string, t time.Time) Measurement {
+	return newMeasurement(name).AddSecondsSince(field, t)
+}
+
 // AddSecondsSince t as the field called name stored as a float64.
 func (m Measurement) AddSecondsSince(name string, t time.Time) Measurement {
 	m.fieldSet[name] = time.Since(t).Seconds()
 	return m
+}
+
+// MeasureMinutesSince creates a new measurement with the given float64 field.
+func MeasureMinutesSince(name string, field string, t time.Time) Measurement {
+	return newMeasurement(name).AddMinutesSince(field, t)
 }
 
 // AddMinutesSince t as the field called name stored as a float64.
@@ -144,10 +94,20 @@ func (m Measurement) AddMinutesSince(name string, t time.Time) Measurement {
 	return m
 }
 
+// MeasureHoursSince creates a new measurement with the given float64 field.
+func MeasureHoursSince(name string, field string, t time.Time) Measurement {
+	return newMeasurement(name).AddHoursSince(field, t)
+}
+
 // AddHoursSince t as the field called name stored as a float64.
 func (m Measurement) AddHoursSince(name string, t time.Time) Measurement {
 	m.fieldSet[name] = time.Since(t).Hours()
 	return m
+}
+
+// MeasureBool creates a new measurement with the given bool field.
+func MeasureBool(name string, field string, value bool) Measurement {
+	return newMeasurement(name).AddBool(field, value)
 }
 
 // AddBool field called name.
@@ -156,10 +116,20 @@ func (m Measurement) AddBool(name string, value bool) Measurement {
 	return m
 }
 
+// MeasureInt creates a new measurement with the given int field.
+func MeasureInt(name string, field string, value int) Measurement {
+	return newMeasurement(name).AddInt(field, value)
+}
+
 // AddInt field called name.
 func (m Measurement) AddInt(name string, value int) Measurement {
 	m.fieldSet[name] = value
 	return m
+}
+
+// MeasureInt8 creates a new measurement with the given int8 field.
+func MeasureInt8(name string, field string, value int8) Measurement {
+	return newMeasurement(name).AddInt8(field, value)
 }
 
 // AddInt8 field called name.
@@ -168,10 +138,20 @@ func (m Measurement) AddInt8(name string, value int8) Measurement {
 	return m
 }
 
+// MeasureInt16 creates a new measurement with the given int16 field.
+func MeasureInt16(name string, field string, value int16) Measurement {
+	return newMeasurement(name).AddInt16(field, value)
+}
+
 // AddInt16 field called name.
 func (m Measurement) AddInt16(name string, value int16) Measurement {
 	m.fieldSet[name] = value
 	return m
+}
+
+// MeasureInt32 creates a new measurement with the given int32 field.
+func MeasureInt32(name string, field string, value int32) Measurement {
+	return newMeasurement(name).AddInt32(field, value)
 }
 
 // AddInt32 field called name.
@@ -180,10 +160,20 @@ func (m Measurement) AddInt32(name string, value int32) Measurement {
 	return m
 }
 
+// MeasureInt64 creates a new measurement with the given int64 field.
+func MeasureInt64(name string, field string, value int64) Measurement {
+	return newMeasurement(name).AddInt64(field, value)
+}
+
 // AddInt64 field called name.
 func (m Measurement) AddInt64(name string, value int64) Measurement {
 	m.fieldSet[name] = value
 	return m
+}
+
+// MeasureUInt creates a new measurement with the given uint field.
+func MeasureUInt(name string, field string, value uint) Measurement {
+	return newMeasurement(name).AddUInt(field, value)
 }
 
 // AddUInt field called name.
@@ -192,10 +182,20 @@ func (m Measurement) AddUInt(name string, value uint) Measurement {
 	return m
 }
 
+// MeasureUInt8 creates a new measurement with the given uint8 field.
+func MeasureUInt8(name string, field string, value uint8) Measurement {
+	return newMeasurement(name).AddUInt8(field, value)
+}
+
 // AddUInt8 field called name.
 func (m Measurement) AddUInt8(name string, value uint8) Measurement {
 	m.fieldSet[name] = value
 	return m
+}
+
+// MeasureUInt16 creates a new measurement with the given uint16 field.
+func MeasureUInt16(name string, field string, value uint16) Measurement {
+	return newMeasurement(name).AddUInt16(field, value)
 }
 
 // AddUInt16 field called name.
@@ -204,10 +204,20 @@ func (m Measurement) AddUInt16(name string, value uint16) Measurement {
 	return m
 }
 
+// MeasureUInt32 creates a new measurement with the given uint32 field.
+func MeasureUInt32(name string, field string, value uint32) Measurement {
+	return newMeasurement(name).AddUInt32(field, value)
+}
+
 // AddUInt32 field called name.
 func (m Measurement) AddUInt32(name string, value uint32) Measurement {
 	m.fieldSet[name] = value
 	return m
+}
+
+// MeasureUInt64 creates a new measurement with the given uint64 field.
+func MeasureUInt64(name string, field string, value uint64) Measurement {
+	return newMeasurement(name).AddUInt64(field, value)
 }
 
 // AddUInt64 field called name.
@@ -216,16 +226,31 @@ func (m Measurement) AddUInt64(name string, value uint64) Measurement {
 	return m
 }
 
+// MeasureFloat32 creates a new measurement with the given float32 field.
+func MeasureFloat32(name string, field string, value float32) Measurement {
+	return newMeasurement(name).AddFloat32(field, value)
+}
+
 // AddFloat32 field called name.
 func (m Measurement) AddFloat32(name string, value float32) Measurement {
 	m.fieldSet[name] = value
 	return m
 }
 
+// MeasureFloat64 creates a new measurement with the given float64 field.
+func MeasureFloat64(name string, field string, value float64) Measurement {
+	return newMeasurement(name).AddFloat64(field, value)
+}
+
 // AddFloat64 field called name.
 func (m Measurement) AddFloat64(name string, value float64) Measurement {
 	m.fieldSet[name] = value
 	return m
+}
+
+// MeasureString creates a new measurement with the given string field.
+func MeasureString(name string, field string, value string) Measurement {
+	return newMeasurement(name).AddString(field, value)
 }
 
 // AddString field called name.
