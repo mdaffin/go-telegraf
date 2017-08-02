@@ -15,10 +15,8 @@ type Client struct {
 //
 // Example telegraf configuration.
 //
-// ```
-// [[inputs.socket_listener]]
-//   service_address = "udp://:8094"
-// ```
+//   [[inputs.socket_listener]]
+//     service_address = "udp://127.0.0.1:8094"
 func NewUDP(addr string) (Client, error) {
 	conn, err := net.Dial("udp", addr)
 	return Client{conn: conn}, err
@@ -28,10 +26,8 @@ func NewUDP(addr string) (Client, error) {
 //
 // Example telegraf configuration.
 //
-// ```
-// [[inputs.socket_listener]]
-//   service_address = "tcp://:8094"
-// ```
+//   [[inputs.socket_listener]]
+//     service_address = "tcp://127.0.0.1:8094"
 func NewTCP(addr string) (Client, error) {
 	conn, err := net.Dial("tcp", addr)
 	return Client{conn: conn}, err
@@ -41,10 +37,8 @@ func NewTCP(addr string) (Client, error) {
 //
 // Example telegraf configuration.
 //
-// ```
-// [[inputs.socket_listener]]
-//   service_address = "unix:///var/run/telegraf.sock"
-// ```
+//   [[inputs.socket_listener]]
+//     service_address = "unix:///var/run/telegraf.sock"
 func NewUnix(addr string) (Client, error) {
 	conn, err := net.Dial("unix", addr)
 	return Client{conn: conn}, err
