@@ -33,6 +33,11 @@ func newMeasurement(name string) Measurement {
 	}
 }
 
+// Name of the measurement.
+func (m Measurement) Name() string {
+	return m.name
+}
+
 // SetTime of the measurement. The default is time.Now(), this can be used to
 // override the default. Set it to a zero time to unset the time, which will
 // cause telegraf or influxdb to set the time when they recieve the measurement
