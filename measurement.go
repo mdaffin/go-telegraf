@@ -59,6 +59,16 @@ func (m Measurement) AddTag(name string, value string) Measurement {
 	return m
 }
 
+// AddTags to the measurement. Tags are global for all fields in this
+// measurement - if you want them to have differenent tags you must create a
+// second measurement with the alternate tags.
+func (m Measurement) AddTags(tags map[string]string) Measurement {
+	for name, value := range tags {
+		m.tagSet[name] = value
+	}
+	return m
+}
+
 // MeasureNanosecondsSince creates a new measurement with the given uint64 field.
 func MeasureNanosecondsSince(name string, field string, t time.Time) Measurement {
 	return NewMeasurement(name).AddNanosecondsSince(field, t)
