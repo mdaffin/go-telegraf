@@ -82,14 +82,14 @@ func (m Measurement) AddNanosecondsSince(name string, t time.Time) Measurement {
 	return m
 }
 
-// MeasureMillisecondsSince creates a new measurement with the given uint64 field.
+// MeasureMillisecondsSince creates a new measurement with the given float64 field.
 func MeasureMillisecondsSince(name string, field string, t time.Time) Measurement {
 	return NewMeasurement(name).AddMillisecondsSince(field, t)
 }
 
-// AddMillisecondsSince t as the field called name stored as a int64.
+// AddMillisecondsSince t as the field called name stored as a float64.
 func (m Measurement) AddMillisecondsSince(name string, t time.Time) Measurement {
-	m.fieldSet[name] = time.Since(t).Nanoseconds() / 1e6
+	m.fieldSet[name] = float64(time.Since(t).Nanoseconds()) / float64((int64(time.Millisecond) / int64(time.Nanosecond)))
 	return m
 }
 
