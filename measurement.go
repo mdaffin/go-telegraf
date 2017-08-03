@@ -55,7 +55,9 @@ func (m Measurement) SetTime(time time.Time) Measurement {
 // measurement - if you want them to have differenent tags you must create a
 // second measurement with the alternate tags.
 func (m Measurement) AddTag(name string, value string) Measurement {
-	m.tagSet[name] = value
+	if value != "" {
+		m.tagSet[name] = value
+	}
 	return m
 }
 
@@ -64,7 +66,7 @@ func (m Measurement) AddTag(name string, value string) Measurement {
 // second measurement with the alternate tags.
 func (m Measurement) AddTags(tags map[string]string) Measurement {
 	for name, value := range tags {
-		m.tagSet[name] = value
+		m.AddTag(name, value)
 	}
 	return m
 }

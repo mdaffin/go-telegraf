@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMeasurementsToString(t *testing.T) {
+func TestMeasurementsToLineProtocal(t *testing.T) {
 	now := time.Now()
 	tests := []struct {
 		name   string
@@ -52,6 +52,34 @@ func TestMeasurementsToString(t *testing.T) {
 	}
 }
 
+func TestMeasurementsAddTags(t *testing.T) {
+	tests := []struct {
+		name   string
+		start  Measurement
+		tags   map[string]string
+		output map[string]string
+	}{
+		{"SingleAdd", Measurement{"measurement", map[string]string{}, nil, time.Time{}},
+			map[string]string{"tag1": "value"}, map[string]string{"tag1": "value"}},
+		{"DoubleAdd", Measurement{"measurement", map[string]string{}, nil, time.Time{}},
+			map[string]string{"tag1": "value1", "tag2": "value2"}, map[string]string{"tag1": "value1", "tag2": "value2"}},
+		{"DuplicateAddOverwrites", Measurement{"measurement", map[string]string{"tag1": "value1"}, nil, time.Time{}},
+			map[string]string{"tag1": "valueA"}, map[string]string{"tag1": "valueA"}},
+		{"ExcludeEmptyValue", Measurement{"measurement", map[string]string{}, nil, time.Time{}},
+			map[string]string{"tag1": ""}, map[string]string{}},
+		{"ExcludeEmptyValueIfAlreadyExists", Measurement{"measurement", map[string]string{"tag1": "value1"}, nil, time.Time{}},
+			map[string]string{"tag1": ""}, map[string]string{"tag1": "value1"}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			for name, value := range test.tags {
+				test.start.AddTag(name, value)
+			}
+			assert.Equal(t, test.output, test.start.tagSet)
+		})
+	}
+}
 func BenchmarkMeasurementsToString(b *testing.B) {
 	weather := MeasureFloat64("weather", "temp", 22.7)
 	b.ResetTimer()
