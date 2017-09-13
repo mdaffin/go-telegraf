@@ -12,7 +12,7 @@ func ExampleClient() {
 	if err != nil {
 		log.Fatal("could not connect:", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	m := telegraf.MeasureFloat64("cpu", "load_avg", 0.5)
 
